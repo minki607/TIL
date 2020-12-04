@@ -105,7 +105,60 @@
 
 - 프로토타입은 임의의 다른 객체로 변결할수 있음
 - 프로퍼티 교체를 하고 constructor 프로퍼티와 생성자 함수 간의 연결을 재설정 해주지 않으면 연결이 파괴됨으로 주의해야함
-- 상속 관계를 동적으로 변경시키는건 번거롭고 실수를 유발할수 있으니 직접 교체하는건 권장하지 않음.
+- 상속 관계를 동적으로 변경시키는건 번거롭고 실수를 유발할수 있으니 직접 교체하는건 권장하지 않음. (직접 상속, 클래스를 이용)
+
+## 직접 상속
+- new 연산자가 없이도 객체를 생성할수 있음
+- 프로토타입을 지정하면서 객체를 생성할수 있음
+- 객체 리터럴에 의해 생성된 객체도 상속이 가능
+
+```javascript
+obj = Object.create(Person.prototype);
+obj.name = 'Min';
+console.log(Object.getPrototypeOf(obj) === Person.prototype); (true)
+```
+
+## 정적 프로퍼티/메서드
+
+- 생성자 함수로 인스턴스를 생성하지 않아도 참조/호출이 가능한 프로퍼티/메서드
+- 생성자 함수에 추가한 정적 프로퍼티/메서드는 생성자 함수로 참조/호출, 
+- 함수가 생성한 인스턴스로는 참조 할수 없음.
+
+ex) `Object.create` - Object 생성자 함수의 정적 메서드, `Object.hasOwnProperty` - `Object.prototype` 의 메서드
+
+## 프로퍼티 존재 확인
+
+### in 연산자
+
+- 객체 내에 특정한 프로퍼티가 존재하는지 확인
+
+```javascript
+  // key in object
+
+  const animal = {
+    name: 'Tom',
+    species: 'Cat'
+  };
+
+  console.log ('name' in person) //true
+  console.log ('toString' in person) //true - person 이라는 객체엔
+   // toString 이 없지만 상위 객체인 Object의 프로퍼티이므로 상속받아 있다고 표시
+  
+```
+`in`과 똑같이 작동하는 `Reflect.has`(ES6) 를 사용해도 똑같은 결과가 나옴
+
+## 프로퍼티 열거 
+
+- `for (변수선언문 in 객체)`
+
+- 순회 대상이 객체의 프로퍼티뿐만 아니라 상속받은 프로토타입의 프로퍼티까지 열거 (프로토타입 체인상에 존재하는 모든 프로토타입의 프로퍼티)
+- 열거할수 없도록 정의되어 있는 프로퍼티를 제외한 모든 프로퍼티를 순회하며 열거 (`[[Enumerable]]이 true`)
+
+
+
+
+
+
 
 
 
