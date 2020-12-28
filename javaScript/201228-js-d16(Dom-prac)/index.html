@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <ul id="sports-list">
+      <li class ="sports" id="football">축구</li>
+      <li class="sports" id="basketball">농구 <span>상</span></li>
+      <li class="sports" id="baseball">야구</li>
+    </ul>
+  </body>
+  <script>
+    // id를 이용한 요소 노드 취득 - 항상 첫번째 (단 하나의 노드만 반환)
+    // const $elem = document.getElementById('basketball');
+    // console.log($elem); // <li id="basketball">농구</li>
+
+    // 태그 이름을 이요한 요소 노드 취득 - 여러 노드 객체를 HTMLCollection 객체로 반환
+    // const $elem = document.getElementsByTagName('li');
+
+    // class를 이용
+    // const $elem = document.getElementsByClassName('sports');
+
+    // Css 선택자를 이용 - DOM 콜렉션 객체인 Nodelist를 반환 
+    // 하나의 요소 - querySelector
+    // 부합하는 모든 요소 - querySelectorAll
+
+    // 특정 요소를 취득할수 있는지 확인 
+    // 인수로 전달된 css 선택자로 취득가능한지 불리언값 반환
+    // document.getElementById.matches('#baseball');
+
+    // 자식 노드 탐색
+    const $slist = document.getElementById('sports-list');
+    // childNodes는 모든 자식 노드 탐색. 요소 노드 뿐만아니라 텍스트 노드 포함
+    console.log($slist.childNodes);
+    // children 노드는 요소노드만 포함 (텍스트 x)
+    console.log($slist.children);
+    // firstChild, lastChild 텍스트, 요소 노드 둘다 취득가능
+    console.log($slist.firstChild)
+    console.log($slist.lastChild)
+    // 텍스트, 요소 노드 모두 포함해서 자식 노드 유무 확인 - hasChildNodes()
+    console.log($slist.hasChildNodes())
+    // 요소 노드만 확인하고 싶다면 children.length 또는 childElementCount 사용
+    $slist.children.length // 0 -> false
+    $slist.childElementCount // 0 -> false
+
+    // 부모 노드 탐색 - parentNode
+    document.getElementById('football').parentNode // ul#sports-list
+
+    // 형제 노드 탐색 - 텍스트 노드 또는 요소 노드만 반환
+    const { firstChild } = $slist;
+    console.log(firstChild); // 여기서 첫반째 자식노드는 빈 텍스트
+    console.log(firstChild.nextSibling) // 텍스트 다음 요소는 li.sports#football
+    
+    // 텍스트 노드를 제외하고 검색하고 싶다면 Element로 요소를 검색할꺼라는걸 명시
+    const { nextElementSibling } = firstChild;
+    console.log(nextElementSibling);
+
+    // 노드 정보 취득
+    // 노드 타입 - nodeType
+    // ELEMENT_NODE: 요소 노드 타입을 나타내는 상수 1 반환
+    // TEXT_NODE: 텍스트 노드 타입을 나타내는 상수 3 반환
+    // DOCUMENT.NODE: 문서 노드 타입을 나타내는 상수 9 반환
+    console.log($slist.nodeType) // 1
+    // 노드 이름 - nodeName
+    // 요소노드: 대문자로 태그 이름 반환 (UL, LI)
+    // 텍스트 노드: 문자열 #text
+    // 문서: #document
+    console.log($slist.nodeName) // UL
+
+    // 텍스트 노드 조작
+    // nodeValue - 텍스트 노드 객체의 값을 반환 (문서, 요소는 null반환)
+    const $footynext = document.getElementById('football').nextSibling; // ul#sports-list
+    $footynext.nodeValue = 'Insert After Footy';
+
+    // textContent - 요소 노드의 컨텐츠 영역내의 텍스트를 모드 반환
+    const $basketball = document.getElementById('basketball');
+    console.log($basketball.textContent); //농구 상 - 상이 <span>에 감싸져 있어도 텍스트 전부 반환
+    
+    // innerHTML
+    // 위와 비슷하게 작동하지만 css에 의해 비표시된 요소텍스트 노드를 반환히지 않음
+    // textContent보다 조금 느림
+    // 요소 노드의 html 마m업을 취득하거나 변경
+    console.log($basketball.innerHTML); // 농구 <span>상</span>
+    $slist.innerHTML += '<li class="sports">volleyball</li>';
+
+    // insertAdjacentHTML
+    // 기존 요소를 제거하지 않고 위치를 지정해 새로운 요소 삽입
+    // beforebegin, afterbegin, beforeend, afterend
+    $slist.insertAdjacentHTML('beforebegin', '<p>This is a sport"s list</p>')
+
+    // 노드 생성과 추가 
+    // 요소 노드 추가 - createElement
+    const $li = document.createElement('li');
+    // 텍스트 노드 추가 - createTextNode
+    const $text  = document.createTextNode('cricket');
+    $li.appendChild($text);
+    $slist.appendChild($li); // 마지막 노드로 추가
+
+    // 지정한 위치에 노드 삽입/이동
+    $slist.insertBefore($li, $slist.firstElementChild); // 첫번째 요소로 삽입
+
+    // 노드 복사 - cloneNode
+    const $cloned = $li.cloneNode();
+    $cloned.textContent = 'cycling';
+    $slist.appendChild($cloned);
+
+    // 노드 교체 - replaceChild(newChild, oldChild)
+    $slist.replaceChild($li, $cloned);
+
+    // 노드 삭제 removeChild
+    $slist.removeChild($slist.firstElementChild.nextSibling);
+  </script>
+</html>
