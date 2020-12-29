@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text">
+  <div class="msg"></div>
+</body>
+<script>
+  const $input = document.querySelector('input');
+  const $msg = document.querySelector('.msg');
+
+  const debounce = (cb, delay) => {
+    let timerId;
+    return event => {
+      if (timerId) clearTimeout(timerId);
+      timerId = setTimeout(cb, delay, event)
+    }
+  }
+
+  $input.oninput = debounce(e => {
+    $msg.textContent = e.target.value;
+  }, 1000);
+
+</script>
+</html>
