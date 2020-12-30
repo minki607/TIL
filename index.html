@@ -13,6 +13,8 @@
   const $input = document.querySelector('input');
   const $msg = document.querySelector('.msg');
 
+  // 1초가 경과하기 전에 새로운 이벤트 (input)이 입력된다면 이전 타이머를 취소한뒤 새로운 타이머를 설정
+  // 따라서 1초가 경과한뒤 입력해야 콜백함수가 호출됨 (메세지 요소의 text를 바꾸는 함수)
   const debounce = (cb, delay) => {
     let timerId;
     return event => {
