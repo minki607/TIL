@@ -1,0 +1,17 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "content": "HTML",
+      "completed": true
+    },
+    {
+      "id": 2,
+      "content": "React",
+      "completed": true
+    },
+    {
+      "id": 3
+    }
+  ]
+}
