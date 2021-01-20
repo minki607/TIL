@@ -19,16 +19,40 @@
 
 - then 
 ```javascript
-const promise = new Promise((resolve, reject)=>{
-  setTimeout(()=>{
-    resolve("resolved");
-  }, 3000);
+const promise = new Promise((resolve, reject)=> {
+  if (/*비동기 성공 조건*/) {
+    setTimeout(()=>{
+        resolve("resolved");
+      }, 3000);
+  } else {
+    reject(new Error("rejected"))
+  }
 });
 
-promise.then(value => console.log(value));
+// 비동기 처리가 성공했을때는 첫번째 콜백함수를 , 실패했으면 두번째 콜백함수를 호출
+promise.then(value => console.log(value), err => console.error(err));
 ```
+**만약 then이 여러개 있다면 다른 콜백함수에서 발생한 에러를 캐치하지 못할수도 있으니 가독성이 안좋은 then의 두번째 인수를 사용하는것보단 catch를 쓰는걸 권장
+
 - catch
+프로미스가 rejected 상태인 경우만 호출
+
+```javascript 
+const promise = new Promise((resolve, reject)=>{
+  setTimeout(()=>{
+    reject(new Error('rejected'));
+  }, 3000);
+});
+promise.then(result => console.log(result)).catch(error => console.error(error));
+// 3초 후에 rejected 에러가 출력
+```
 - finally
+
+상태와 상관없이 무조건 한번 처리할 내용이 있을 경우 사용
+
+```javascript
+  new Promise(() => {}).finally(() => console.log('this will be triggered at least once'))
+```
 
 ## 프로미스 정적 메서드
 
@@ -96,13 +120,13 @@ Promise.allSettled([requestData1(), requestData2(), requestData3()])
 //   }
 // ]
 
-fetch - HTTP 응답을 나타내는 response 객체를 래핑한 프로미스 객체를 반환 (WEB API)
+// fetch - HTTP 응답을 나타내는 response 객체를 래핑한 프로미스 객체를 반환 (WEB API)
 
 
-// fetch('https://pokeapi.co/api/v2/pokemon/1')
-// .then(response => response.json())
-// .then(json => console.log(json.name))
-// .catch(console.error);
+fetch('https://pokeapi.co/api/v2/pokemon/1')
+.then(response => response.json())
+.then(json => console.log(json.name))
+.catch(console.error);
 
 const request = {
   get(url) {
